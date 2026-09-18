@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>CampusDefender SOC Dashboard</title>
+    <meta http-equiv="refresh" content="5">
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+body {
+    margin: 0;
+    font-family: 'Inter', sans-serif;
+    background-color: #0f172a;
+    color: #e2e8f0;
+    font-weight: 600;
+}
+
+/* NAVBAR with centered title and buttons on sides */
+
+.navbar {
+    background: #111827;
+    padding: 20px 30px;
+    display: flex;
+    justify-content: center; /* centers the title */
+    align-items: center;     /* vertical center */
+    border-bottom: 2px solid #1f2937;
+}
+
+.navbar h1 {
+    font-size: 28px;
+    font-weight: 800;
+    color: #22c55e;
+    letter-spacing: 2px;
+    margin: 0;
+    text-align: center;
+}
+
+.header {
+    background: #1e293b;          /* dark professional background */
+    color: #22c55e;               /* bright accent color */
+    font-size: 32px;               /* bigger, bold title */
+    font-weight: 800;              /* bold and prominent */
+    text-align: center;            /* center text horizontally */
+    padding: 30px 20px;            /* space around the text */
+    border-radius: 12px;           /* rounded edges */
+    margin: 20px auto;             /* center block with top/bottom spacing */
+    max-width: 90%;                /* prevent it from stretching too much on wide screens */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4); /* subtle depth */
+    letter-spacing: 1.5px;         /* modern spacing */
+}
+
+/* CARDS */
+
+.cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 25px;
+    padding: 30px;
+}
+
+.card {
+    background: linear-gradient(145deg, #1e293b, #111827);
+    padding: 25px;
+    border-radius: 16px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border: 1px solid #1f2937;
+}
+
+.card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 14px 30px rgba(34, 197, 94, 0.2);
+}
+
+.card h3 {
+    font-size: 14px;
+    margin-bottom: 10px;
+}
+
+.card p {
+    font-size: 26px;
+    font-weight: 700;
+}
+
+/* MONITOR CARD */
+.section {
+    background: linear-gradient(145deg, #1e293b, #111827); /* card-like gradient */
+    padding: 25px 20px;
+    border-radius: 16px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+    margin: 20px auto;
+    max-width: 500px;        /* controls card width */
+    color: #e2e8f0;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.section:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 14px 30px rgba(34,197,94,0.2);
+}
+
+.section h3 {
+    font-size: 22px;
+    font-weight: 700;
+    margin: 0;
+    color: #22c55e;
+    letter-spacing: 1px;
+}
+
+/* Status */
+.status {
+    font-weight: 700;
+    font-size: 18px;
+    padding: 6px 12px;
+    border-radius: 8px;
+}
+
+.status.green {
+    background-color: #16a34a33; /* subtle green background */
+    color: #22c55e;
+}
+
+.status.red {
+    background-color: #dc262633; /* subtle red background */
+    color: #ef4444;
+}
+
+/* Buttons */
+.section .btn {
+    display: inline-block;
+    padding: 8px 18px;
+    border-radius: 8px;
+    font-weight: 700;
+    font-size: 14px;
+    text-decoration: none;
+    color: white;
+    cursor: pointer;
+    transition: background 0.25s ease, transform 0.2s ease;
+}
+
+.btn.start {
+    background-color: #22c55e;
+}
+
+.btn.stop {
+    background-color: #ef4444;
+}
+
+.btn.start:hover {
+    background-color: #16a34a;
+    transform: translateY(-2px);
+}
+
+.btn.stop:hover {
+    background-color: #dc2626;
+    transform: translateY(-2px);
+}
+
+/* Disable Start button when active */
+.section .btn.disabled {
+    background-color: #6b7280; /* gray disabled */
+    cursor: not-allowed;
+    pointer-events: none;
+    transform: none;
+}
+
+
+/* TABLE */
+table {
+    width: 95%;
+    margin: 20px auto;
+    border-collapse: separate;
+    border-spacing: 0;
+    background: #1e293b;
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+th, td {
+    padding: 14px 18px;
+    text-align: left;
+}
+
+th {
+    background: #111827;
+    color: #22c55e;
+    font-size: 15px;
+}
+
+tr:nth-child(even) {
+    background: #1f2937;
+}
+
+tr:hover {
+    background: #334155;
+}
+
+/* LOGS SECTION */
+.logs {
+    background: #111827;         /* subtle background for the whole logs area */
+    padding: 25px 20px;
+    border-radius: 16px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+    margin: 20px auto;
+    max-width: 900px;           /* limit width for readability */
+    color: #e2e8f0;
+}
+
+.logs h3 {
+    font-size: 26px;
+    font-weight: 800;
+    color: #22c55e;
+    margin-bottom: 15px;
+    letter-spacing: 1px;
+}
+
+/* INDIVIDUAL LOG ENTRY */
+.log-entry {
+    background: #1e293b;
+    padding: 15px 20px;
+    border-radius: 12px;
+    margin-bottom: 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 14px;
+    font-weight: 500;
+    color: #e2e8f0;
+    flex-wrap: wrap; /* wrap text on smaller screens */
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.log-entry:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(34,197,94,0.2);
+}
+
+/* Action-based color coding */
+.log-entry span.blocked {
+    color: #ef4444;  /* red for blocked */
+    font-weight: 700;
+}
+
+.log-entry span.allowed {
+    color: #22c55e;  /* green for allowed */
+    font-weight: 700;
+}
+
+/* Unblock button */
+.log-entry .btn.unblock {
+    background-color: #22c55e;
+    color: white;
+    padding: 6px 12px;
+    border-radius: 8px;
+    font-weight: 700;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background 0.25s ease, transform 0.2s ease;
+}
+
+.log-entry .btn.unblock:hover {
+    background-color: #16a34a;
+    transform: translateY(-2px);
+}
+
+/* BUTTONS */
+
+button {
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-weight: 700;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background 0.25s ease, transform 0.25s ease;
+    margin-right: 10px;
+}
+
+.btn-danger:hover {
+    background: #dc2626;
+    transform: translateY(-2px);
+}
+
+.btn-success:hover {
+    background: #16a34a;
+    transform: translateY(-2px);
+}
+
+/* FOOTER */
+.footer {
+    background: #111827;             /* dark background matching navbar */
+    color: #94a3b8;                  /* soft gray text for subtlety */
+    font-size: 14px;                  /* slightly smaller than main content */
+    font-weight: 500;
+    text-align: center;               /* center text */
+    padding: 15px 20px;               /* some spacing */
+    border-top: 2px solid #1f2937;   /* separates footer from content */
+    box-shadow: 0 -4px 15px rgba(0,0,0,0.3); /* subtle lift effect */
+    letter-spacing: 0.5px;
+    position: relative;               /* ensures it stays at the bottom normally */
+    z-index: 10;
+    border-radius: 12px 12px 0 0;    /* rounded top corners for modern look */
+    max-width: 100%;
+}
+
+/* Optional hover glow (if you want subtle interactivity) */
+.footer:hover {
+    box-shadow: 0 -4px 20px rgba(34,197,94,0.3);
+    color: #22c55e;                   /* green accent on hover */
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div style="background:#1e293b;padding:15px;display:flex;justify-content:space-between;align-items:center;">
+
+    <div class="navbar">
+
+         <h1>CampusDefender</h1>
+
+    </div>
+
+    <div>
+        <a href="/" style="color:#38bdf8;margin-right:20px;text-decoration:none;">Dashboard</a>
+        <a href="/analytics" style="color:#e2e8f0;margin-right:20px;text-decoration:none;">Analytics</a>
+        <a href="/logout" style="color:#f43f5e;text-decoration:none;">Logout</a>
+    </div>
+</div>
+
+
+
+<div class="header">
+    CampusDefender Security Operations Dashboard
+</div>
+
+<div class="container">
+
+    <!-- STATISTICS -->
+    <div class="cards">
+        <div class="card">
+            <h3>Brute Force Attempts</h3>
+            <p>{{ stats.brute }}</p>
+        </div>
+
+        <div class="card">
+            <h3>Port Scan Attempts</h3>
+            <p>{{ stats.portscan }}</p>
+     </div>
+
+        <div class="card">
+            <h3>Blocked IPs</h3>
+            <p>{{ stats.blocked }}</p>
+        </div>
+
+        <div class="card">
+            <h3>Top Attacker IP</h3>
+            <p>{{ stats.most_ip }}</p>
+        </div>
+
+        <div class="card">
+            <h3>Anomaly Level</h3>
+            <p class="
+                {% if stats.anomaly == 'High' %}red
+                {% elif stats.anomaly == 'Medium' %}yellow
+                {% else %}green
+                {% endif %}
+            ">
+                {{ stats.anomaly }}
+            </p>
+        </div>
+    </div>
+
+    <!-- MONITOR CONTROLS -->
+    <div class="section">
+        <h3>Brute Force Monitor</h3>
+        {% if brute_running %}
+            <span class="status green">ACTIVE</span>
+            <a href="#" class="btn start disabled">Start</a>
+            <a href="/stop_brute" class="btn stop">Stop</a>
+        {% else %}
+            <span class="status red">INACTIVE</span>
+            <a href="/start_brute" class="btn start">Start</a>
+            <a href="#" class="btn stop disabled">Stop</a>
+        {% endif %}
+    </div>
+
+    <div class="section">
+        <h3>Port Scan Monitor</h3>
+        {% if portscan_running %}
+            <span class="status green">ACTIVE</span>
+            <a href="#" class="btn start disabled">Start</a>
+            <a href="/stop_portscan" class="btn stop">Stop</a>
+        {% else %}
+            <span class="status red">INACTIVE</span>
+            <a href="/start_portscan" class="btn start">Start</a>
+            <a href="#" class="btn stop disabled">Stop</a>
+        {% endif %}
+    </div>    
+
+
+    <!-- LOG EVENTS FROM SQLITE -->
+    <div class="logs">
+        <h3>Latest Security Events</h3>
+
+        {% for log in logs %}
+            <div class="log-entry">
+                 <div class="log-text">
+                      {{ log.timestamp }} |
+                      {{ log.type }} |
+                      {{ log.ip }} |
+                      <span class="{% if log.action == 'BLOCKED' %}blocked{% else %}allowed{% endif %}">
+                           {{ log.action }}
+                      </span> |
+                      {{ log.details }}
+                 </div>
+                  
+                 {% if log.action == "BLOCKED" %}
+                    <a href="/unblock/{{ log.ip }}" class="btn unblock">Unblock</a>
+                 {% endif %}
+            </div>
+        {% endfor %}
+    </div>
+
+    <div class="footer">
+        CampusDefender v2.0 | SQLite Integrated | Real-Time Monitoring
+    </div>
+
+</div>
+
+</body>
+</html>

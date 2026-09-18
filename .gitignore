@@ -1,0 +1,53 @@
+# ==============================
+# CampusDefender .gitignore
+# ==============================
+
+# --- Environment & Secrets ---
+.env
+.env.*
+!.env.example
+
+# --- Python Virtual Environment ---
+venv/
+env/
+.venv/
+
+# --- Python Cache / Compiled Files ---
+__pycache__/
+*.py[cod]
+*$py.class
+
+# --- SQLite / Local Databases ---
+*.db
+*.sqlite
+*.sqlite3
+
+# --- Logs ---
+logs/
+*.log
+
+# --- IDE / Editor Files ---
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# --- Operating System Files ---
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# --- Python Testing / Coverage ---
+.pytest_cache/
+.coverage
+htmlcov/
+
+# --- Build / Packaging ---
+build/
+dist/
+*.egg-info/
+
+# --- Temporary Files ---
+*.tmp
+*.temp
+*.bak
